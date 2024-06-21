@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-import { itemschema } from "./item.js";
+import { productschema } from "./product.js";
 import { customerschema } from "./customer.js";
-import { vendorschema } from "./vendor.js";
+import { distributorschema } from "./distributor.js";
 import { neuralschema } from "./neural.js";
 
 const poschema = mongoose.Schema({
@@ -23,11 +23,11 @@ const poschema = mongoose.Schema({
     required: true,
   },
   items: {
-    type: [itemschema],
+    type: [productschema],
     required: true,
   },
-  vendor: {
-    type: vendorschema,
+  distributor: {
+    type: distributorschema,
     required: true,
   },
   billing: {

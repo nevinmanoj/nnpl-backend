@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const vendorschema = mongoose.Schema({
+export const distributorschema = mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -19,4 +19,7 @@ export const vendorschema = mongoose.Schema({
   },
 });
 
-export const vendorSchema = mongoose.model("vendorSchema", vendorschema);
+export const distributorSchema = mongoose.model(
+  "distributorSchema",
+  distributorschema
+);

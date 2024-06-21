@@ -1,10 +1,9 @@
-import express  from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 import mongoose from "mongoose";
 
-import poRoutes from "./src/routes/po.js";
-import verifyRoute from "./src/routes/verify.js"
+import routesMain from "./src/routes/routesMain.js";
 
 const app = express();
 const port = 3000;
@@ -14,15 +13,14 @@ app.use(express.json());
 dotenv.config();
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header("Access-Control-Allow-Origin", "*");
   next();
 });
-app.get('/welcome', (req, res) => {
-  res.send("Welcome to the nnpl")
+app.get("/welcome", (req, res) => {
+  res.send("Welcome to the nnpl");
 });
 
-// app.use("/", verifyRoute);
-app.use("/po",poRoutes);
+app.use("/", routesMain);
 
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -33,6 +31,3 @@ mongoose
     app.listen(port, () => console.log(`server running on port ${port}`))
   )
   .catch((err) => console.log(err.message));
-
-
-
