@@ -11,7 +11,7 @@ export const productschema = mongoose.Schema({
   },
   qty: {
     type: Number,
-    required: true,
+    required: false,
   },
   ratePerUnit: {
     type: Number,

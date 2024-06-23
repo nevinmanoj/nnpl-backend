@@ -13,7 +13,11 @@ export const customerschema = mongoose.Schema({
     type: String,
     required: false,
   },
-  address3: {
+  city: {
+    type: String,
+    required: false,
+  },
+  pin: {
     type: String,
     required: false,
   },

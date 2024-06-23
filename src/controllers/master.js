@@ -1,8 +1,11 @@
 import { customerSchema } from "../modals/customer.js";
 import { distributorSchema } from "../modals/distributor.js";
 import { neuralSchema } from "../modals/neural.js";
+import { productSchema } from "../modals/product.js";
 
-export const getItems = async (req, res) => {
+import { masterOptions } from "../utils/masterOptions.js";
+
+export const getItemOptions = async (req, res) => {
   const item = req.params.item;
   try {
     var data = null;
@@ -16,9 +19,13 @@ export const getItems = async (req, res) => {
       case "distributor":
         data = await distributorSchema.where().lean().exec();
         break;
+      case "products":
+        data = await productSchema.where().lean().exec();
+        break;
       default:
         res.status(401).json({ message: "invalid value for item" });
     }
+    data = masterOptions(data);
 
     res.status(200).json({
       message: "GET all " + item + "s success",
@@ -28,6 +35,35 @@ export const getItems = async (req, res) => {
   } catch (error) {
     res.status(401).json({ message: "GET all " + item + "s failed" });
   }
+};
+
+export const getItem = async (req, res) => {
+  const item = req.params.item;
+  const id = req.params.id;
+  var data = null;
+  switch (item) {
+    case "customer":
+      data = await customerSchema.where("_id", id).lean().exec();
+      break;
+    case "neural":
+      data = await neuralSchema.where("_id", id).lean().exec();
+      break;
+    case "distributor":
+      data = await distributorSchema.where("_id", id).lean().exec();
+      break;
+    case "products":
+      data = await productSchema.where("_id", id).lean().exec();
+      break;
+    default:
+      res.status(401).json({ message: "invalid value for item" });
+  }
+  if (data.length == 0) {
+    res.status(401).json({ message: "invalid id for item" });
+  }
+  res.status(200).json({
+    message: "GET " + item + " for id " + id + " success",
+    data: data[0],
+  });
 };
 
 export const addItem = async (req, res) => {
@@ -44,6 +80,9 @@ export const addItem = async (req, res) => {
         break;
       case "distributor":
         newdata = new distributorSchema(data);
+        break;
+      case "products":
+        newdata = new productSchema(data);
         break;
       default:
         res.status(401).json({ message: "invalid value for item" });
@@ -72,6 +111,8 @@ export const updateItem = async (req, res) => {
       case "distributor":
         dataFromDb = await distributorSchema.findById(data._id);
         break;
+      case "products":
+        dataFromDb = await productSchema.findById(data._id);
       default:
         res.status(401).json({ message: "invalid value for item" });
     }

@@ -22,7 +22,7 @@ const poschema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  items: {
+  products: {
     type: [productschema],
     required: true,
   },
