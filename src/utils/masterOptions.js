@@ -1,8 +1,8 @@
-export const masterOptions = (data) => {
+export const masterOptions = (data, label) => {
   return data.map((obj) => {
     return {
       value: obj._id,
-      label: obj.title,
+      label: obj[label],
     };
   });
 };

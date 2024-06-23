@@ -9,31 +9,36 @@ export const getItemOptions = async (req, res) => {
   const item = req.params.item;
   try {
     var data = null;
+    var label = "title";
     switch (item) {
       case "customer":
         data = await customerSchema.where().lean().exec();
+
         break;
       case "neural":
         data = await neuralSchema.where().lean().exec();
+
         break;
       case "distributor":
         data = await distributorSchema.where().lean().exec();
         break;
       case "products":
         data = await productSchema.where().lean().exec();
+        label = "product";
         break;
       default:
-        res.status(401).json({ message: "invalid value for item" });
+        return res.status(401).json({ message: "invalid value for item" });
     }
-    data = masterOptions(data);
 
-    res.status(200).json({
+    data = masterOptions(data, label);
+
+    return res.status(200).json({
       message: "GET all " + item + "s success",
       count: data.length,
       data,
     });
   } catch (error) {
-    res.status(401).json({ message: "GET all " + item + "s failed" });
+    return res.status(401).json({ message: "GET all " + item + "s failed" });
   }
 };
 
@@ -55,12 +60,13 @@ export const getItem = async (req, res) => {
       data = await productSchema.where("_id", id).lean().exec();
       break;
     default:
-      res.status(401).json({ message: "invalid value for item" });
+      return res.status(401).json({ message: "invalid value for item" });
   }
+
   if (data.length == 0) {
-    res.status(401).json({ message: "invalid id for item" });
+    return res.status(401).json({ message: "invalid id for item" });
   }
-  res.status(200).json({
+  return res.status(200).json({
     message: "GET " + item + " for id " + id + " success",
     data: data[0],
   });
@@ -85,13 +91,15 @@ export const addItem = async (req, res) => {
         newdata = new productSchema(data);
         break;
       default:
-        res.status(401).json({ message: "invalid value for item" });
+        return res.status(401).json({ message: "invalid value for item" });
     }
 
     await newdata.save();
-    res.status(200).json({ message: item + " add success", data: newdata });
+    return res
+      .status(200)
+      .json({ message: item + " add success", data: newdata });
   } catch (error) {
-    res.status(401).json({ message: item + " add failed", error });
+    return res.status(401).json({ message: item + " add failed", error });
   }
 };
 
@@ -114,14 +122,14 @@ export const updateItem = async (req, res) => {
       case "products":
         dataFromDb = await productSchema.findById(data._id);
       default:
-        res.status(401).json({ message: "invalid value for item" });
+        return res.status(401).json({ message: "invalid value for item" });
     }
     Object.assign(dataFromDb, data);
     await dataFromDb.save();
-    res
+    return res
       .status(200)
       .json({ message: item + " update success", data: dataFromDb });
   } catch (error) {
-    res.status(401).json({ message: item + " update failed", error });
+    return res.status(401).json({ message: item + " update failed", error });
   }
 };
