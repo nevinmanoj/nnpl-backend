@@ -5,13 +5,17 @@ export const productschema = mongoose.Schema({
     type: String,
     required: true,
   },
+  productDesc: {
+    type: String,
+    required: false,
+  },
   partCode: {
     type: String,
-    required: true,
+    required: false,
   },
   qty: {
     type: Number,
-    required: false,
+    required: true,
   },
   ratePerUnit: {
     type: Number,

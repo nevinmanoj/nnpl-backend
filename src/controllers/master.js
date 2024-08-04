@@ -13,11 +13,9 @@ export const getItemOptions = async (req, res) => {
     switch (item) {
       case "customer":
         data = await customerSchema.where().lean().exec();
-
         break;
       case "neural":
         data = await neuralSchema.where().lean().exec();
-
         break;
       case "distributor":
         data = await distributorSchema.where().lean().exec();

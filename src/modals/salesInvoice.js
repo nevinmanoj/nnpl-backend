@@ -2,15 +2,14 @@ import mongoose from "mongoose";
 
 import { productschema } from "./product.js";
 import { customerschema } from "./customer.js";
-import { distributorschema } from "./distributor.js";
 import { neuralschema } from "./neural.js";
 
-const poschema = mongoose.Schema({
-  pno: {
+const salesInvoiceschema = mongoose.Schema({
+  no: {
     type: String,
     required: true,
   },
-  status: {
+  Status: {
     type: String,
     required: true,
   },
@@ -26,22 +25,21 @@ const poschema = mongoose.Schema({
     type: [productschema],
     required: true,
   },
-  distributor: {
-    type: distributorschema,
-    required: true,
-  },
   billing: {
     type: neuralschema,
+    required: true,
+  },
+  roundOff: {
+    type: Number,
     required: true,
   },
   customer: {
     type: customerschema,
     required: true,
   },
-  tc: {
-    type: Object,
-    required: false,
-  },
 });
 
-export const PoSchema = mongoose.model("PoSchema", poschema);
+export const SalesInvoiceSchema = mongoose.model(
+  "SalesInvoiceSchema",
+  salesInvoiceschema
+);

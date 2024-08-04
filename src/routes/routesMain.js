@@ -1,15 +1,15 @@
 import express from "express";
 
-import poRoutes from "./po.js";
 import verifyRoute from "./verify.js";
 import masterRoute from "./master.js";
+import docRoute from "./docs.js";
 
 const router = express.Router();
 
-// app.use("/", verifyRoute);
+router.use("/", verifyRoute);
 
-//purchase order
-router.use("/po", poRoutes);
+//sales-invoice,purchase order, purchase invoice
+router.use("/docs", docRoute);
 
 //master
 router.use("/master", masterRoute);
