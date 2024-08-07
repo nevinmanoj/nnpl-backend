@@ -2,6 +2,7 @@ import { customerSchema } from "../modals/customer.js";
 import { distributorSchema } from "../modals/distributor.js";
 import { neuralSchema } from "../modals/neural.js";
 import { productSchema } from "../modals/product.js";
+import { LedgerAccountSchema } from "../modals/ledgerAccount.js";
 
 import { masterOptions } from "../utils/masterOptions.js";
 
@@ -23,6 +24,9 @@ export const getItemOptions = async (req, res) => {
       case "products":
         data = await productSchema.where().lean().exec();
         label = "product";
+        break;
+      case "ledger":
+        data = await LedgerAccountSchema.where().lean().exec();
         break;
       default:
         return res.status(401).json({ message: "invalid value for item" });
@@ -57,6 +61,10 @@ export const getItem = async (req, res) => {
     case "products":
       data = await productSchema.where("_id", id).lean().exec();
       break;
+    case "ledger":
+      data = await LedgerAccountSchema.where("_id", id).lean().exec();
+      break;
+
     default:
       return res.status(401).json({ message: "invalid value for item" });
   }
@@ -87,6 +95,9 @@ export const addItem = async (req, res) => {
         break;
       case "products":
         newdata = new productSchema(data);
+        break;
+      case "ledger":
+        newdata = new LedgerAccountSchema(data);
         break;
       default:
         return res.status(401).json({ message: "invalid value for item" });
@@ -119,6 +130,10 @@ export const updateItem = async (req, res) => {
         break;
       case "products":
         dataFromDb = await productSchema.findById(data._id);
+        break;
+      case "ledger":
+        dataFromDb = await LedgerAccountSchema.findById(data._id);
+        break;
       default:
         return res.status(401).json({ message: "invalid value for item" });
     }

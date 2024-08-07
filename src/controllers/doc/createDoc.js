@@ -16,7 +16,7 @@ export const addDoc = async (req, res) => {
         await newDoc.save();
         break;
       case "sales-invoice":
-        newDoc = new SalesInvoiceSchema({ ...data, sino: pid });
+        newDoc = new SalesInvoiceSchema(data);
         await newDoc.save();
         break;
       default:

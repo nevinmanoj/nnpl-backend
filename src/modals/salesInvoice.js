@@ -3,13 +3,14 @@ import mongoose from "mongoose";
 import { productschema } from "./product.js";
 import { customerschema } from "./customer.js";
 import { neuralschema } from "./neural.js";
+import { LedgerAccountschema } from "./ledgerAccount.js";
 
 const salesInvoiceschema = mongoose.Schema({
-  no: {
+  sino: {
     type: String,
     required: true,
   },
-  Status: {
+  status: {
     type: String,
     required: true,
   },
@@ -17,8 +18,8 @@ const salesInvoiceschema = mongoose.Schema({
     type: Date,
     required: true,
   },
-  tax: {
-    type: Number,
+  ledgerAccount: {
+    type: LedgerAccountschema,
     required: true,
   },
   products: {
