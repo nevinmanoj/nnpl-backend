@@ -1,6 +1,4 @@
-import { PoSchema } from "../../modals/po.js";
-import { SalesInvoiceSchema } from "../../modals/salesInvoice.js";
-
+import { docSchemaSelector } from "../../utils/docSchemaSelector.js";
 import { isAdmin } from "../../utils/isAdmin.js";
 
 export const deleteDoc = async (req, res) => {
@@ -13,16 +11,11 @@ export const deleteDoc = async (req, res) => {
     //check for admin access
 
     var docFromDb = null;
-    switch (item) {
-      case "po":
-        docFromDb = await PoSchema.findById(id);
-        break;
-      case "sales-invoice":
-        docFromDb = await SalesInvoiceSchema.findById(id);
-        break;
-      default:
-        return res.status(404).json({ message: "invalid path", error });
+    const schema = docSchemaSelector(item);
+    if (schema == null) {
+      return res.status(404).json({ message: "invalid path", error });
     }
+    docFromDb = await schema.findById(id);
     await docFromDb.deleteOne({ _id: id });
     return res.status(200).json({ message: item + " delete success" });
   } catch (error) {

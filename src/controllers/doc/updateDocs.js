@@ -1,5 +1,4 @@
-import { PoSchema } from "../../modals/po.js";
-import { SalesInvoiceSchema } from "../../modals/salesInvoice.js";
+import { docSchemaSelector } from "../../utils/docSchemaSelector.js";
 
 import { isAdmin } from "../../utils/isAdmin.js";
 
@@ -11,16 +10,11 @@ export const modifyDoc = async (req, res) => {
 
       //   const userID=req.decoded.userID;
       var dataFromDB = null;
-      switch (item) {
-        case "po":
-          dataFromDB = await PoSchema.findById(id);
-          break;
-        case "sales-invoice":
-          dataFromDB = await SalesInvoiceSchema.findById(id);
-          break;
-        default:
-          return res.status(404).json({ message: "invalid path", error });
+      const schema = docSchemaSelector(item);
+      if (schema == null) {
+        return res.status(404).json({ message: "invalid path", error });
       }
+      dataFromDB = await schema.findById(id);
       //if not in draft modify it to provide overide for admin
       if (dataFromDB.status != "draft" && !isAdmin("")) {
         return res

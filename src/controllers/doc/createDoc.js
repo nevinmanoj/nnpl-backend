@@ -1,5 +1,4 @@
-import { PoSchema } from "../../modals/po.js";
-import { SalesInvoiceSchema } from "../../modals/salesInvoice.js";
+import { docSchemaSelector } from "../../utils/docSchemaSelector.js";
 
 export const addDoc = async (req, res) => {
   const item = req.params.item;
@@ -9,20 +8,15 @@ export const addDoc = async (req, res) => {
     const pid = "NNPL/SW/gen/new";
     //   const userID=req.decoded.userID;
     var newDoc = null;
-
-    switch (item) {
-      case "po":
-        newDoc = new PoSchema({ ...data, pno: pid });
-        await newDoc.save();
-        break;
-      case "sales-invoice":
-        newDoc = new SalesInvoiceSchema(data);
-        await newDoc.save();
-        break;
-      default:
-        return res.status(404).json({ message: "invalid path", error });
+    if (item == "po") {
+      data = { ...data, pno: pid };
     }
-
+    const schema = docSchemaSelector(item);
+    if (schema == null) {
+      return res.status(404).json({ message: "invalid path", error });
+    }
+    newDoc = new schema(data);
+    await newDoc.save();
     return res
       .status(200)
       .json({ message: item + " add success", data: newDoc });
