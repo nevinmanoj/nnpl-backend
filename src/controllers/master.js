@@ -1,37 +1,20 @@
-import { customerSchema } from "../modals/customer.js";
-import { distributorSchema } from "../modals/distributor.js";
-import { neuralSchema } from "../modals/neural.js";
-import { productSchema } from "../modals/product.js";
-import { LedgerAccountSchema } from "../modals/ledgerAccount.js";
-
 import { masterOptions } from "../utils/masterOptions.js";
+import { masterSchemaSelector } from "../utils/masterSchemaSelector.js";
 
 export const getItemOptions = async (req, res) => {
   const item = req.params.item;
   try {
     var data = null;
     var label = "title";
-    switch (item) {
-      case "customer":
-        data = await customerSchema.where().lean().exec();
-        break;
-      case "neural":
-        data = await neuralSchema.where().lean().exec();
-        break;
-      case "distributor":
-        data = await distributorSchema.where().lean().exec();
-        break;
-      case "products":
-        data = await productSchema.where().lean().exec();
-        label = "product";
-        break;
-      case "ledger":
-        data = await LedgerAccountSchema.where().lean().exec();
-        break;
-      default:
-        return res.status(401).json({ message: "invalid value for item" });
-    }
 
+    const schema = masterSchemaSelector(item);
+    if (schema == null) {
+      return res.status(401).json({ message: "invalid value for item" });
+    }
+    if (item == "products") {
+      label = "product";
+    }
+    data = await schema.where().lean().exec();
     data = masterOptions(data, label);
 
     return res.status(200).json({
@@ -48,26 +31,11 @@ export const getItem = async (req, res) => {
   const item = req.params.item;
   const id = req.params.id;
   var data = null;
-  switch (item) {
-    case "customer":
-      data = await customerSchema.where("_id", id).lean().exec();
-      break;
-    case "neural":
-      data = await neuralSchema.where("_id", id).lean().exec();
-      break;
-    case "distributor":
-      data = await distributorSchema.where("_id", id).lean().exec();
-      break;
-    case "products":
-      data = await productSchema.where("_id", id).lean().exec();
-      break;
-    case "ledger":
-      data = await LedgerAccountSchema.where("_id", id).lean().exec();
-      break;
-
-    default:
-      return res.status(401).json({ message: "invalid value for item" });
+  const schema = masterSchemaSelector(item);
+  if (schema == null) {
+    return res.status(401).json({ message: "invalid value for item" });
   }
+  data = await schema.where("_id", id).lean().exec();
 
   if (data.length == 0) {
     return res.status(401).json({ message: "invalid id for item" });
@@ -83,26 +51,12 @@ export const addItem = async (req, res) => {
   const { data } = req.body;
   try {
     var newdata = null;
-    switch (item) {
-      case "customer":
-        newdata = new customerSchema(data);
-        break;
-      case "neural":
-        newdata = new neuralSchema(data);
-        break;
-      case "distributor":
-        newdata = new distributorSchema(data);
-        break;
-      case "products":
-        newdata = new productSchema(data);
-        break;
-      case "ledger":
-        newdata = new LedgerAccountSchema(data);
-        break;
-      default:
-        return res.status(401).json({ message: "invalid value for item" });
+    const schema = masterSchemaSelector(item);
+    if (schema == null) {
+      return res.status(401).json({ message: "invalid value for item" });
     }
 
+    newdata = new schema(data);
     await newdata.save();
     return res
       .status(200)
@@ -113,30 +67,16 @@ export const addItem = async (req, res) => {
 };
 
 export const updateItem = async (req, res) => {
-  const item = req.params.item;
+  const { id, item } = req.params;
   const { data } = req.body;
   console.log(data);
   try {
     var dataFromDb = null;
-    switch (item) {
-      case "customer":
-        dataFromDb = await customerSchema.findById(data._id);
-        break;
-      case "neural":
-        dataFromDb = await neuralSchema.findById(data._id);
-        break;
-      case "distributor":
-        dataFromDb = await distributorSchema.findById(data._id);
-        break;
-      case "products":
-        dataFromDb = await productSchema.findById(data._id);
-        break;
-      case "ledger":
-        dataFromDb = await LedgerAccountSchema.findById(data._id);
-        break;
-      default:
-        return res.status(401).json({ message: "invalid value for item" });
+    const schema = masterSchemaSelector(item);
+    if (schema == null) {
+      return res.status(401).json({ message: "invalid value for item" });
     }
+    dataFromDb = await schema.findById(id);
     Object.assign(dataFromDb, data);
     await dataFromDb.save();
     return res
