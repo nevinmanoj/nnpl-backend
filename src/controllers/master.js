@@ -14,6 +14,9 @@ export const getItemOptions = async (req, res) => {
     if (item == "products") {
       label = "product";
     }
+    if (item == "executive") {
+      label = "name";
+    }
     data = await schema.where().lean().exec();
     data = masterOptions(data, label);
 

@@ -4,6 +4,7 @@ import { productschema } from "./product.js";
 import { customerschema } from "./customer.js";
 import { neuralschema } from "./neural.js";
 import { LedgerAccountschema } from "./ledgerAccount.js";
+import { Executiveschema } from "./executive.js";
 
 const salesInvoiceschema = mongoose.Schema({
   sino: {
@@ -36,6 +37,10 @@ const salesInvoiceschema = mongoose.Schema({
   },
   customer: {
     type: customerschema,
+    required: true,
+  },
+  executive: {
+    type: Executiveschema,
     required: true,
   },
 });

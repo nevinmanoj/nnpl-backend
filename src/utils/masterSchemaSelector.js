@@ -3,6 +3,7 @@ import { distributorSchema } from "../modals/distributor.js";
 import { neuralSchema } from "../modals/neural.js";
 import { productSchema } from "../modals/product.js";
 import { LedgerAccountSchema } from "../modals/ledgerAccount.js";
+import { ExecutiveSchema } from "../modals/executive.js";
 
 export const masterSchemaSelector = (item) => {
   switch (item) {
@@ -16,6 +17,8 @@ export const masterSchemaSelector = (item) => {
       return productSchema;
     case "ledger":
       return LedgerAccountSchema;
+    case "executive":
+      return ExecutiveSchema;
     default:
       return null;
   }
