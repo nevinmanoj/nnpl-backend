@@ -16,7 +16,7 @@ export const getAllDocs = async (req, res) => {
     }
     return res.status(200).json({
       message: `GET All ${item}(s) for user success`,
-      count: data.length,
+      totalCount: data.length,
       data,
     });
   } catch (error) {

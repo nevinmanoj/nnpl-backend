@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-import { productschema } from "./product.js";
-import { customerschema } from "./customer.js";
-import { neuralschema } from "./neural.js";
-import { LedgerAccountschema } from "./ledgerAccount.js";
-import { Executiveschema } from "./executive.js";
+import { productschema } from "../masters/product.js";
+import { customerschema } from "../masters/customer.js";
+import { neuralschema } from "../masters/neural.js";
+import { LedgerAccountschema } from "../masters/ledgerAccount.js";
+import { Executiveschema } from "../masters/executive.js";
 
 const salesInvoiceschema = mongoose.Schema({
   sino: {
@@ -13,6 +13,10 @@ const salesInvoiceschema = mongoose.Schema({
   },
   status: {
     type: String,
+    required: true,
+  },
+  grandTotal: {
+    type: Number,
     required: true,
   },
   date: {

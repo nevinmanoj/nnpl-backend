@@ -1,9 +1,9 @@
-import { customerSchema } from "../modals/customer.js";
-import { distributorSchema } from "../modals/distributor.js";
-import { neuralSchema } from "../modals/neural.js";
-import { productSchema } from "../modals/product.js";
-import { LedgerAccountSchema } from "../modals/ledgerAccount.js";
-import { ExecutiveSchema } from "../modals/executive.js";
+import { customerSchema } from "../modals/masters/customer.js";
+import { distributorSchema } from "../modals/masters/distributor.js";
+import { neuralSchema } from "../modals/masters/neural.js";
+import { productSchema } from "../modals/masters/product.js";
+import { LedgerAccountSchema } from "../modals/masters/ledgerAccount.js";
+import { ExecutiveSchema } from "../modals/masters/executive.js";
 
 export const masterSchemaSelector = (item) => {
   switch (item) {

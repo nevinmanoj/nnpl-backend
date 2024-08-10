@@ -1,4 +1,5 @@
 import { docSchemaSelector } from "../../utils/docSchemaSelector.js";
+import { calcGrandTotal } from "../../utils/grandTotalCalc.js";
 
 export const addDoc = async (req, res) => {
   const item = req.params.item;
@@ -11,6 +12,13 @@ export const addDoc = async (req, res) => {
     if (item == "po") {
       data = { ...data, pno: pid };
     }
+
+    const grandTotal = calcGrandTotal({
+      products: data.products,
+      tax: data.ledgerAccount.tax,
+    });
+    data = { ...data, grandTotal };
+
     const schema = docSchemaSelector(item);
     if (schema == null) {
       return res.status(404).json({ message: "invalid path", error });

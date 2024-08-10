@@ -1,12 +1,12 @@
 import { docSchemaSelector } from "../../utils/docSchemaSelector.js";
-
+import { calcGrandTotal } from "../../utils/grandTotalCalc.js";
 import { isAdmin } from "../../utils/isAdmin.js";
 
 export const modifyDoc = async (req, res) => {
   {
     const { item, id } = req.params;
     try {
-      const { data } = req.body;
+      var { data } = req.body;
 
       //   const userID=req.decoded.userID;
       var dataFromDB = null;
@@ -21,6 +21,11 @@ export const modifyDoc = async (req, res) => {
           .status(404)
           .json({ message: item + " is not in draft state", error });
       }
+      const grandTotal = calcGrandTotal({
+        products: data.products,
+        tax: data.ledgerAccount.tax,
+      });
+      data = { ...data, grandTotal };
       Object.assign(dataFromDB, data);
       await dataFromDB.save();
       return res

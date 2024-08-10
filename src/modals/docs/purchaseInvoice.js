@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-import { productschema } from "./product.js";
-import { distributorschema } from "./distributor.js";
-import { neuralschema } from "./neural.js";
-import { LedgerAccountschema } from "./ledgerAccount.js";
-import { customerschema } from "./customer.js";
+import { productschema } from "../masters/product.js";
+import { distributorschema } from "../masters/distributor.js";
+import { neuralschema } from "../masters/neural.js";
+import { LedgerAccountschema } from "../masters/ledgerAccount.js";
+import { customerschema } from "../masters/customer.js";
 
 const purchaseInvoiceschema = mongoose.Schema({
   pino: {
@@ -13,6 +13,10 @@ const purchaseInvoiceschema = mongoose.Schema({
   },
   status: {
     type: String,
+    required: true,
+  },
+  grandTotal: {
+    type: Number,
     required: true,
   },
   date: {
