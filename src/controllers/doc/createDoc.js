@@ -1,23 +1,24 @@
 import { docSchemaSelector } from "../../utils/docSchemaSelector.js";
+import { getPoNo } from "../../utils/getPoNo.js";
 import { calcGrandTotal } from "../../utils/grandTotalCalc.js";
 
 export const addDoc = async (req, res) => {
   const item = req.params.item;
   try {
-    const { data } = req.body;
+    var { data } = req.body;
     //need to generate a new nnpl based id for doc
-    const pid = "NNPL/SW/gen/new";
+    const ref = getPoNo(data["date"]);
     //   const userID=req.decoded.userID;
     var newDoc = null;
     if (item == "po") {
-      data = { ...data, pno: pid };
+      data = { ...data, ref };
     }
 
     const grandTotal = calcGrandTotal({
       products: data.products,
       tax: data.ledgerAccount.tax,
     });
-    data = { ...data, grandTotal };
+    data = { ...data, grandTotal, status: "draft" };
 
     const schema = docSchemaSelector(item);
     if (schema == null) {

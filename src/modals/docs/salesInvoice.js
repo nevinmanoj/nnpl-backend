@@ -7,7 +7,7 @@ import { LedgerAccountschema } from "../masters/ledgerAccount.js";
 import { Executiveschema } from "../masters/executive.js";
 
 const salesInvoiceschema = mongoose.Schema({
-  sino: {
+  ref: {
     type: String,
     required: true,
   },

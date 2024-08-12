@@ -7,7 +7,7 @@ import { LedgerAccountschema } from "../masters/ledgerAccount.js";
 import { customerschema } from "../masters/customer.js";
 
 const purchaseInvoiceschema = mongoose.Schema({
-  pino: {
+  ref: {
     type: String,
     required: true,
   },

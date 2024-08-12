@@ -7,7 +7,7 @@ import { neuralschema } from "../masters/neural.js";
 import { LedgerAccountschema } from "../masters/ledgerAccount.js";
 
 const poschema = mongoose.Schema({
-  pno: {
+  ref: {
     type: String,
     required: true,
   },
