@@ -1,4 +1,4 @@
-export const calcGrandTotal = ({ products, tax }) => {
+export const calcTotal = (products) => {
   var total = 0.0;
   var qty = 0;
   var rate = 0;
@@ -10,7 +10,5 @@ export const calcGrandTotal = ({ products, tax }) => {
       total = total + qty * rate;
     } catch (error) {}
   });
-  const convtax = parseFloat(tax);
-  total = total + (total * convtax) / 100;
   return total;
 };

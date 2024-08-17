@@ -47,6 +47,14 @@ const poschema = mongoose.Schema({
     type: Object,
     required: false,
   },
+  roundOff: {
+    type: Number,
+    required: true,
+  },
+  discount: {
+    type: Number,
+    required: true,
+  },
 });
 
 export const PoSchema = mongoose.model("PoSchema", poschema);

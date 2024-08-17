@@ -1,5 +1,5 @@
 import { docSchemaSelector } from "../../utils/docSchemaSelector.js";
-import { calcGrandTotal } from "../../utils/grandTotalCalc.js";
+import { calcTotal } from "../../utils/calcTotal.js";
 import { isAdmin } from "../../utils/isAdmin.js";
 
 export const modifyDoc = async (req, res) => {
@@ -21,10 +21,13 @@ export const modifyDoc = async (req, res) => {
           .status(404)
           .json({ message: item + " is not in draft state", error });
       }
-      const grandTotal = calcGrandTotal({
-        products: data.products,
-        tax: data.ledgerAccount.tax,
-      });
+      var grandTotal = calcTotal(data.products);
+      const convtax = parseFloat(data.ledgerAccount.tax);
+      const convdiscount = parseFloat(data.discount);
+      const convRoundOff = parseFloat(data.roundOff);
+      grandTotal =
+        grandTotal + convRoundOff - convdiscount + (grandTotal * convtax) / 100;
+
       data = { ...data, grandTotal };
       Object.assign(dataFromDB, data);
       await dataFromDB.save();

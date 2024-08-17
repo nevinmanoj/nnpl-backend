@@ -5,6 +5,10 @@ export const customerschema = mongoose.Schema({
     type: String,
     required: true,
   },
+  companyName: {
+    type: String,
+    required: true,
+  },
   address1: {
     type: String,
     required: true,

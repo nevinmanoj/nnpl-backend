@@ -1,6 +1,6 @@
 import { docSchemaSelector } from "../../utils/docSchemaSelector.js";
 import { getPoNo } from "../../utils/getPoNo.js";
-import { calcGrandTotal } from "../../utils/grandTotalCalc.js";
+import { calcTotal } from "../../utils/calcTotal.js";
 
 export const addDoc = async (req, res) => {
   const item = req.params.item;
@@ -14,10 +14,12 @@ export const addDoc = async (req, res) => {
       data = { ...data, ref };
     }
 
-    const grandTotal = calcGrandTotal({
-      products: data.products,
-      tax: data.ledgerAccount.tax,
-    });
+    var grandTotal = calcTotal(data.products);
+    const convtax = parseFloat(data.ledgerAccount.tax);
+    const convdiscount = parseFloat(data.discount);
+    const convRoundOff = parseFloat(data.roundOff);
+    grandTotal =
+      grandTotal + convRoundOff - convdiscount + (grandTotal * convtax) / 100;
     data = { ...data, grandTotal, status: "draft" };
 
     const schema = docSchemaSelector(item);

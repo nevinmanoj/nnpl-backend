@@ -47,6 +47,10 @@ const purchaseInvoiceschema = mongoose.Schema({
     type: distributorschema,
     required: true,
   },
+  discount: {
+    type: Number,
+    required: true,
+  },
 });
 
 export const PurchaseInvoiceSchema = mongoose.model(

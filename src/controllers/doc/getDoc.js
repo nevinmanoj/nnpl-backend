@@ -1,6 +1,7 @@
 import { DocListOptions } from "../../utils/docListOptions.js";
 import { docSchemaSelector } from "../../utils/docSchemaSelector.js";
 import { formatDocListQuery } from "../../utils/formatDocListQuery.js";
+import { POExcel } from "./POExcel.js";
 
 export const getAllDocs = async (req, res) => {
   const item = req.params.item;
@@ -45,10 +46,44 @@ export const getDoc = async (req, res) => {
     if (data.length == 0) {
       return res.status(401).json({ message: "invalid id for doc" });
     }
+
     return res.status(200).json({
       message: "GET " + item + " for id " + id + " success",
       data: data[0],
     });
+  } catch (error) {
+    return res.status(401).json({ message: "invalid id for doc" });
+  }
+};
+export const getExcel = async (req, res) => {
+  const { item, id } = req.params;
+  try {
+    var data = null;
+    if (item != "po") {
+      return res
+        .status(404)
+        .json({ message: "Excel generation not supported", error });
+    }
+    const schema = docSchemaSelector(item);
+    if (schema == null) {
+      return res.status(404).json({ message: "invalid path", error });
+    }
+    data = await schema.where("_id", id).lean().exec();
+    if (data.length == 0) {
+      return res.status(401).json({ message: "invalid id for doc" });
+    }
+    const file = POExcel(data[0]);
+    const fileName = data[0].ref.replace(/\//g, "_");
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + fileName + ".xlsx"
+    );
+    await file.xlsx.write(res);
+    res.end();
   } catch (error) {
     return res.status(401).json({ message: "invalid id for doc" });
   }

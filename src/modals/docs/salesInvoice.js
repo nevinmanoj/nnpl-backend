@@ -47,6 +47,10 @@ const salesInvoiceschema = mongoose.Schema({
     type: Executiveschema,
     required: true,
   },
+  discount: {
+    type: Number,
+    required: true,
+  },
 });
 
 export const SalesInvoiceSchema = mongoose.model(
