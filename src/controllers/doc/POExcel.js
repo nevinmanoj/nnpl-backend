@@ -166,8 +166,11 @@ export const POExcel = (data) => {
     sheet.getCell(`A${index}`).value = i + 1;
     sheet.getCell(`A${index}`).alignment = centerAlign;
     sheet.mergeCells(`B${index}:G${index}`);
-    const prddec = prd.product + " " + prd.productDesc;
-    const height = Math.ceil(prddec.length / 50) * 18;
+    let prddec = prd.product;
+    if (prd.productDesc) {
+      prddec = prddec + " " + prd.productDesc;
+    }
+    const height = Math.ceil(prddec.length / 60) * 16;
     sheet.getRow(index).height = height;
     sheet.getCell(`B${index}`).value = prddec;
     sheet.getCell(`B${index}`).alignment = { wrapText: true };
@@ -210,10 +213,14 @@ export const POExcel = (data) => {
   sheet.getCell(`K${index}`).numFmt = "#,##,##0.00";
   index = index + 1;
   const convtax = parseFloat(data.ledgerAccount.tax);
+  const subTotalWithTax = subTotal + (subTotal * convtax) / 100;
   sheet.getCell(`H${index}`).value = "GST";
   sheet.getCell(`H${index}`).font = bold;
   sheet.getCell(`J${index}`).value = data.ledgerAccount.tax + "%";
   sheet.getCell(`J${index}`).font = bold;
+  sheet.getCell(`K${index}`).value = subTotalWithTax;
+  sheet.getCell(`K${index}`).font = bold;
+  sheet.getCell(`K${index}`).numFmt = "#,##,##0.00";
   index = index + 1;
   const convDiscount = parseFloat(data.discount);
   sheet.getCell(`H${index}`).value = "Discount";
@@ -232,8 +239,7 @@ export const POExcel = (data) => {
 
   sheet.getCell(`H${index}`).value = "Total with tax";
   sheet.getCell(`H${index}`).font = bold;
-  const grandTotal =
-    subTotal + convRoundOff - convDiscount + (subTotal * convtax) / 100;
+  const grandTotal = subTotalWithTax + convRoundOff - convDiscount;
   sheet.getCell(`K${index}`).value = grandTotal;
   sheet.getCell(`K${index}`).font = bold;
   sheet.getCell(`K${index}`).numFmt = "#,##,##0.00";
@@ -302,7 +308,8 @@ export const POExcel = (data) => {
     sheet,
   });
   for (var item in data.tc) {
-    sheet.getCell(`A${index}`).value = item;
+    sheet.getCell(`A${index}`).value =
+      item.charAt(0).toUpperCase() + item.slice(1).toLowerCase();
     sheet.getCell(`A${index}`).font = bold;
     sheet.getCell(`C${index}`).value = data.tc[item];
     index = index + 1;

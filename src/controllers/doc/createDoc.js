@@ -6,12 +6,16 @@ export const addDoc = async (req, res) => {
   const item = req.params.item;
   try {
     var { data } = req.body;
-    //need to generate a new nnpl based id for doc
-    const ref = getPoNo(data["date"]);
+
+    const schema = docSchemaSelector(item);
+    if (schema == null) {
+      return res.status(404).json({ message: "invalid path", error });
+    }
+
+    // const ref = await getPoNo(data["date"]);
     //   const userID=req.decoded.userID;
-    var newDoc = null;
     if (item == "po") {
-      data = { ...data, ref };
+      data = { ...data, ref: "temp" };
     }
 
     var grandTotal = calcTotal(data.products);
@@ -21,12 +25,18 @@ export const addDoc = async (req, res) => {
     grandTotal =
       grandTotal + convRoundOff - convdiscount + (grandTotal * convtax) / 100;
     data = { ...data, grandTotal, status: "draft" };
+    //
 
-    const schema = docSchemaSelector(item);
-    if (schema == null) {
-      return res.status(404).json({ message: "invalid path", error });
+    var newDoc = new schema(data);
+    const error = newDoc.validateSync();
+    if (error) {
+      return res.status(401).json({ message: item + " add failed", error });
     }
-    newDoc = new schema(data);
+    if (item == "po") {
+      const ref = await getPoNo(data["date"]);
+      data = { ...data, ref };
+      newDoc = new schema(data);
+    }
     await newDoc.save();
     return res
       .status(200)

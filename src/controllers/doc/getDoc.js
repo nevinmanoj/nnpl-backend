@@ -73,7 +73,10 @@ export const getExcel = async (req, res) => {
       return res.status(401).json({ message: "invalid id for doc" });
     }
     const file = POExcel(data[0]);
-    const fileName = data[0].ref.replace(/\//g, "_");
+    const fileName =
+      data[0].distributor.title.split(" ")[0] +
+      "_" +
+      data[0].ref.replace(/\//g, "_");
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"

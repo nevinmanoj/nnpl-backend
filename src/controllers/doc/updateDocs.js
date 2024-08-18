@@ -16,11 +16,11 @@ export const modifyDoc = async (req, res) => {
       }
       dataFromDB = await schema.findById(id);
       //if not in draft modify it to provide overide for admin
-      if (dataFromDB.status != "draft" && !isAdmin("")) {
-        return res
-          .status(404)
-          .json({ message: item + " is not in draft state", error });
-      }
+      // if (dataFromDB.status != "draft" && !isAdmin("")) {
+      //   return res
+      //     .status(404)
+      //     .json({ message: item + " is not in draft state", error });
+      // }
       var grandTotal = calcTotal(data.products);
       const convtax = parseFloat(data.ledgerAccount.tax);
       const convdiscount = parseFloat(data.discount);
