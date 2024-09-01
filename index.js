@@ -27,6 +27,6 @@ app.get("/welcome", (req, res) => {
 //     // useUnifiedTopology: true,
 //   })
 //   .then(() =>
-//     app.listen(port, () => console.log(`server running on port ${port}`))
+app.listen(port, () => console.log(`server running on port ${port}`));
 //   )
 //   .catch((err) => console.log(err.message));
