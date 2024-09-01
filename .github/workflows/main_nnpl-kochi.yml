@@ -28,8 +28,6 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
-          echo "AZUREAPPSERVICE_SUBSCRIPTIONID_7003E4DFA6CB4CF6B33BFF046302C4A7 =${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7003E4DFA6CB4CF6B33BFF046302C4A7  }}" 
-          echo "temp = ${{ secrets.TEMP_PASS }}"
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
