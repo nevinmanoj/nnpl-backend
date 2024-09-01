@@ -17,16 +17,16 @@ app.use((req, res, next) => {
   next();
 });
 app.get("/welcome", (req, res) => {
-  res.send("Welcome to the nnpl " + process.env.TEMP_PASS);
+  res.send("Welcome to the nnpl kochi");
 });
 
-// app.use("/", routesMain);
-// mongoose
-//   .connect(process.env.MONGO_URI, {
-//     // useNewUrlParser: true,
-//     // useUnifiedTopology: true,
-//   })
-//   .then(() =>
-app.listen(port, () => console.log(`server running on port ${port}`));
-//   )
-//   .catch((err) => console.log(err.message));
+app.use("/", routesMain);
+mongoose
+  .connect(process.env.MONGO_URI, {
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true,
+  })
+  .then(() =>
+    app.listen(port, () => console.log(`server running on port ${port}`))
+  )
+  .catch((err) => console.log(err.message));
