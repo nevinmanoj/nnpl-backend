@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import routesMain from "./src/routes/routesMain.js";
 
 const app = express();
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
@@ -17,16 +17,16 @@ app.use((req, res, next) => {
   next();
 });
 app.get("/welcome", (req, res) => {
-  res.send("Welcome to the NNPL");
+  res.send("Welcome to the nnpl " + process.env.TEMP_PASS);
 });
 
-app.use("/", routesMain);
-mongoose
-  .connect(process.env.MONGO_URI, {
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true,
-  })
-  .then(() =>
-    app.listen(port, () => console.log(`server running on port ${port}`))
-  )
-  .catch((err) => console.log(err.message));
+// app.use("/", routesMain);
+// mongoose
+//   .connect(process.env.MONGO_URI, {
+//     // useNewUrlParser: true,
+//     // useUnifiedTopology: true,
+//   })
+//   .then(() =>
+//     app.listen(port, () => console.log(`server running on port ${port}`))
+//   )
+//   .catch((err) => console.log(err.message));
