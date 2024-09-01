@@ -8,7 +8,8 @@ on:
     branches:
       - main
   workflow_dispatch:
-
+env:
+  MONGO_URI: ${{ secrets.MONGO_URI }}
 jobs:
   build:
     runs-on: ubuntu-latest
