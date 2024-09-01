@@ -7,6 +7,7 @@ export const POExcel = (data) => {
 
   sheet.properties.defaultColWidth = 10;
   sheet.getColumn("A").width = 8;
+  sheet.getColumn("J").width = 12;
   sheet.getColumn("K").width = 12;
 
   const bold = {
@@ -63,12 +64,18 @@ export const POExcel = (data) => {
   });
 
   //distributor
+
   sheet.getCell("A3").value = "To,";
   sheet.getCell("A3").font = bold;
   sheet.getCell("A4").value = data.distributor.title;
   sheet.getCell("A4").font = bold;
   sheet.getCell("A5").value = data.distributor.address1;
-  sheet.getCell("A6").value = data.distributor.address2;
+  sheet.getCell("A6").value = data.distributor.address2
+    ? data.distributor.address2
+    : "";
+  // sheet.getCell("A7").value = data.distributor.address3
+  // ? data.distributor.address3
+  // : "";
   sheet.getCell("A7").value = data.distributor.address3;
   sheet = makeOuterBorder({
     startCol: 1,
@@ -95,7 +102,7 @@ export const POExcel = (data) => {
     data.billing.address2 + " " + data.billing.address3;
   sheet.getCell("H7").value = "Ph.No:" + data.billing.phno;
   sheet.getCell("H8").value = "Email: " + data.billing.email;
-  sheet.getCell("H9").value = "GST Provisional ID";
+  sheet.getCell("H9").value = "GST";
   sheet.getCell("J9").value = data.billing.gst;
   sheet.getCell("H10").value = "PAN";
   sheet.getCell("J10").value = data.billing.pan;
@@ -193,7 +200,7 @@ export const POExcel = (data) => {
       sheet.mergeCells(`J${index - 1}:J${index}`);
       sheet.mergeCells(`K${index - 1}:K${index}`);
       sheet.getCell(`C${index}`).value = prd.footNote;
-      sheet.getCell(`C${index}`).alignment = { wrapText: true };
+      sheet.getCell(`C${index}`).alignment = { ...centerAlign, wrapText: true };
       index = index + 1;
     }
   }
@@ -344,6 +351,7 @@ export const POExcel = (data) => {
   return workbook;
 };
 
+//apply border funcitons
 const makeOuterBorder = ({ startCol, startRow, EndCol, EndRow, sheet }) => {
   for (let row = startRow; row <= EndRow; row++) {
     for (let col = startCol; col <= EndCol; col++) {

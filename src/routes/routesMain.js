@@ -4,9 +4,14 @@ import verifyRoute from "./verify.js";
 import masterRoute from "./master.js";
 import docRoute from "./docs.js";
 import devRoute from "./dev.js";
+import userRoute from "./user.js";
 
 const router = express.Router();
 
+//auth and user
+router.use("/user", userRoute);
+
+//verify login
 router.use("/", verifyRoute);
 
 //sales-invoice,purchase order, purchase invoice
