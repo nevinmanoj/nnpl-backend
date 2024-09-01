@@ -17,7 +17,7 @@ app.use((req, res, next) => {
   next();
 });
 app.get("/welcome", (req, res) => {
-  res.send("Welcome to the nnpl");
+  res.send("Welcome to the NNPL");
 });
 
 // app.use("/", routesMain);
