@@ -25,7 +25,6 @@ export const addDoc = async (req, res) => {
     grandTotal =
       grandTotal + convRoundOff - convdiscount + (grandTotal * convtax) / 100;
     data = { ...data, grandTotal, status: "draft" };
-    //
 
     var newDoc = new schema(data);
     const error = newDoc.validateSync();

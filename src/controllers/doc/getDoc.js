@@ -13,6 +13,7 @@ export const getAllDocs = async (req, res) => {
       return res.status(404).json({ message: "invalid path", error });
     }
     const formattedQuery = formatDocListQuery(query);
+
     data = await schema.find(formattedQuery).exec();
 
     if (data == null) {
@@ -26,6 +27,7 @@ export const getAllDocs = async (req, res) => {
       totalCount: data.length,
       data: minData,
       query,
+      formattedQuery,
     });
   } catch (error) {
     return res

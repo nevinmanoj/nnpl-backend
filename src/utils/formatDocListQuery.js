@@ -1,19 +1,16 @@
 export const formatDocListQuery = (query) => {
+  var finalQuery = {};
   if (query.customer) {
-    query = { ...query, "customer.title": query.customer };
-    delete query.customer;
+    finalQuery = { "customer.title": query.customer };
   }
   if (query.distributor) {
-    query = { ...query, "distributor.title": query.distributor };
-    delete query.distributor;
+    finalQuery = { ...finalQuery, "distributor.title": query.distributor };
   }
   if (query.startDate) {
-    query.date = { ...query.date, $gte: new Date(query.startDate) };
-    delete query.startDate;
+    finalQuery.date = { ...finalQuery.date, $gte: new Date(query.startDate) };
   }
   if (query.endDate) {
-    query.date = { ...query.date, $lte: new Date(query.endDate) };
-    delete query.endDate;
+    finalQuery.date = { ...finalQuery.date, $lte: new Date(query.endDate) };
   }
-  return query;
+  return finalQuery;
 };
