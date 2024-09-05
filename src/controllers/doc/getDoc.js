@@ -18,8 +18,6 @@ export const getAllDocs = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 30;
     const skip = (page - 1) * limit;
-    const totalDocs = await schema.countDocuments();
-    const totalPages = Math.ceil(totalDocs / limit);
 
     data = await schema
       .find(formattedQuery)
@@ -34,13 +32,14 @@ export const getAllDocs = async (req, res) => {
         .json({ message: `GET All ${item}(s) for user failed`, query });
     }
     const minData = DocListOptions(data);
+    const totalPages = Math.ceil(minData.length / limit);
     return res.status(200).json({
       message: `GET All ${item}(s) for user success`,
       data: minData,
       query,
       page,
       totalPages,
-      totalDocs,
+      totalDocs: minData.length,
     });
   } catch (error) {
     return res.status(401).json({

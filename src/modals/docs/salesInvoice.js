@@ -23,6 +23,22 @@ const salesInvoiceschema = mongoose.Schema({
     type: Date,
     required: true,
   },
+  lastUpdatedDate: {
+    type: Date,
+    required: true,
+  },
+  lastUpdatedBy: {
+    type: String,
+    required: true,
+  },
+  createdDate: {
+    type: Date,
+    required: true,
+  },
+  createdBy: {
+    type: String,
+    required: true,
+  },
   ledgerAccount: {
     type: LedgerAccountschema,
     required: true,

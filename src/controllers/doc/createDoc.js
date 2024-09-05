@@ -14,6 +14,7 @@ export const addDoc = async (req, res) => {
 
     // const ref = await getPoNo(data["date"]);
     //   const userID=req.decoded.userID;
+    const userID = "placeholder1234";
     if (item == "po") {
       data = { ...data, ref: "temp" };
     }
@@ -24,8 +25,16 @@ export const addDoc = async (req, res) => {
     const convRoundOff = parseFloat(data.roundOff);
     grandTotal =
       grandTotal + convRoundOff - convdiscount + (grandTotal * convtax) / 100;
-    data = { ...data, grandTotal, status: "draft" };
 
+    data = {
+      ...data,
+      status: "draft",
+      grandTotal,
+      createdDate: Date.now(),
+      createdBy: userID,
+      lastUpdatedDate: Date.now(),
+      lastUpdatedBy: userID,
+    };
     var newDoc = new schema(data);
     const error = newDoc.validateSync();
     if (error) {
@@ -36,6 +45,9 @@ export const addDoc = async (req, res) => {
       data = { ...data, ref };
       newDoc = new schema(data);
     }
+
+    //add created date,createdby, lastUpdatedBy, lastUpdatedDate
+
     await newDoc.save();
     return res
       .status(200)

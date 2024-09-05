@@ -9,6 +9,7 @@ export const modifyDoc = async (req, res) => {
       var { data } = req.body;
 
       //   const userID=req.decoded.userID;
+      const userID = "placeholder1234";
       var dataFromDB = null;
       const schema = docSchemaSelector(item);
       if (schema == null) {
@@ -28,7 +29,14 @@ export const modifyDoc = async (req, res) => {
       grandTotal =
         grandTotal + convRoundOff - convdiscount + (grandTotal * convtax) / 100;
 
-      data = { ...data, grandTotal };
+      data = {
+        ...data,
+        grandTotal,
+        lastUpdatedDate: Date.now(),
+        lastUpdatedBy: userID,
+        createdDate: dataFromDB.createdDate,
+        createdBy: dataFromDB.createdBy,
+      };
       Object.assign(dataFromDB, data);
       await dataFromDB.save();
       return res
