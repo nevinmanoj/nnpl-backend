@@ -16,11 +16,11 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   next();
 });
-app.get("/welcome", (req, res) => {
-  res.send("Welcome to the nnpl kochi");
+app.get("/nnpl/api/welcome", (req, res) => {
+  res.send("Welcome to the nnpl");
 });
 
-app.use("/", routesMain);
+app.use("/nnpl/api", routesMain);
 mongoose
   .connect(process.env.MONGO_URI, {
     // useNewUrlParser: true,
