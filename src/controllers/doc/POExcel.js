@@ -1,5 +1,6 @@
 import ExcelJs from "exceljs";
 import { calcTotal } from "../../utils/calcTotal.js";
+import { ddmmyyyy } from "../../utils/formatDate.js";
 
 export const POExcel = (data) => {
   const workbook = new ExcelJs.Workbook();
@@ -45,9 +46,10 @@ export const POExcel = (data) => {
   });
 
   //Date
+
   sheet.getCell("H2").value = "Date";
   sheet.getCell("H2").font = bold;
-  sheet.getCell("I2").value = "23-04-2024";
+  sheet.getCell("I2").value = ddmmyyyy(data.date);
   sheet = makeOuterBorder({
     startCol: 8,
     startRow: 2,

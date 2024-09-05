@@ -14,7 +14,19 @@ export const getAllDocs = async (req, res) => {
     }
     const formattedQuery = formatDocListQuery(query);
 
-    data = await schema.find(formattedQuery).exec();
+    //pagination
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 30;
+    const skip = (page - 1) * limit;
+    const totalDocs = await schema.countDocuments();
+    const totalPages = Math.ceil(totalDocs / limit);
+
+    data = await schema
+      .find(formattedQuery)
+      .sort({ date: -1 })
+      .skip(skip)
+      .limit(limit)
+      .exec();
 
     if (data == null) {
       return res
@@ -24,15 +36,18 @@ export const getAllDocs = async (req, res) => {
     const minData = DocListOptions(data);
     return res.status(200).json({
       message: `GET All ${item}(s) for user success`,
-      totalCount: data.length,
       data: minData,
       query,
-      formattedQuery,
+      page,
+      totalPages,
+      totalDocs,
     });
   } catch (error) {
-    return res
-      .status(401)
-      .json({ message: `GET All ${item}(s) for user failed`, error, query });
+    return res.status(401).json({
+      message: `GET All ${item}(s) for user failed`,
+      error,
+      query,
+    });
   }
 };
 
