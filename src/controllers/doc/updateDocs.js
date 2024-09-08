@@ -36,6 +36,7 @@ export const modifyDoc = async (req, res) => {
         lastUpdatedBy: userID,
         createdDate: dataFromDB.createdDate,
         createdBy: dataFromDB.createdBy,
+        ref: dataFromDB.ref,
       };
       Object.assign(dataFromDB, data);
       await dataFromDB.save();

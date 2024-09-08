@@ -19,5 +19,5 @@ export const getPoNo = async (dateString) => {
   const lastNum = result.seq;
   const formattedNum = lastNum.toString().padStart(4, "0");
 
-  return `NNPL/${fy}/${formattedNum}`;
+  return `NNPL/${formattedNum}/${fy}`;
 };

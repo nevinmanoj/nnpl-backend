@@ -222,12 +222,12 @@ export const POExcel = (data) => {
   sheet.getCell(`K${index}`).numFmt = "#,##,##0.00";
   index = index + 1;
   const convtax = parseFloat(data.ledgerAccount.tax);
-  const subTotalWithTax = subTotal + (subTotal * convtax) / 100;
+  const taxValue = (subTotal * convtax) / 100;
   sheet.getCell(`H${index}`).value = "GST";
   sheet.getCell(`H${index}`).font = bold;
   sheet.getCell(`J${index}`).value = data.ledgerAccount.tax + "%";
   sheet.getCell(`J${index}`).font = bold;
-  sheet.getCell(`K${index}`).value = subTotalWithTax;
+  sheet.getCell(`K${index}`).value = taxValue;
   sheet.getCell(`K${index}`).font = bold;
   sheet.getCell(`K${index}`).numFmt = "#,##,##0.00";
   index = index + 1;
@@ -248,7 +248,7 @@ export const POExcel = (data) => {
 
   sheet.getCell(`H${index}`).value = "Total with tax";
   sheet.getCell(`H${index}`).font = bold;
-  const grandTotal = subTotalWithTax + convRoundOff - convDiscount;
+  const grandTotal = subTotal + taxValue + convRoundOff - convDiscount;
   sheet.getCell(`K${index}`).value = grandTotal;
   sheet.getCell(`K${index}`).font = bold;
   sheet.getCell(`K${index}`).numFmt = "#,##,##0.00";
