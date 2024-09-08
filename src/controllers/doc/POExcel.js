@@ -177,12 +177,15 @@ export const POExcel = (data) => {
     sheet.mergeCells(`B${index}:G${index}`);
     let prddec = prd.product;
     if (prd.productDesc) {
-      prddec = prddec + " " + prd.productDesc;
+      prddec = prddec + "\n" + prd.productDesc;
     }
-    const height = Math.ceil(prddec.length / 60) * 16;
+    const height = (Math.ceil(prddec.length / 60) + 1) * 16;
     sheet.getRow(index).height = height;
     sheet.getCell(`B${index}`).value = prddec;
-    sheet.getCell(`B${index}`).alignment = { wrapText: true };
+    sheet.getCell(`B${index}`).alignment = {
+      vertical: "middle",
+      wrapText: true,
+    };
     sheet.getCell(`H${index}`).value = prd.partCode;
     sheet.getCell(`H${index}`).alignment = centerAlign;
     sheet.getCell(`I${index}`).value = prd.qty;
